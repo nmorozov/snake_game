@@ -99,6 +99,14 @@ export class Snake {
     return false;
   }
 
+  public collidesWithWall(maxCol: number, maxRows: number): boolean {
+    const head = this.getHead();
+    const col = head.getCol();
+    const row = head.getRow();
+
+    return col === 0 || row === 0 || col === maxCol - 1 || row === maxRows - 1;
+  }
+
   public eats(food: Food) {
     const head = this.getHead();
 

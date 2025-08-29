@@ -21,8 +21,6 @@ export class Game {
     this.renderer = new CanvasRenderer(canvasCtx);
     this.sound = sound;
 
-    this.gameState = new GameState();
-
     const gridSize = this.renderer.getGridSize();
     const centerCol = Math.floor(gridSize.cols / 2);
     const centerRow = Math.floor(gridSize.rows / 2);
@@ -34,6 +32,8 @@ export class Game {
     ];
     this.snake = new Snake(initialSegments);
     this.food = new Food(gridSize.cols, gridSize.rows);
+
+    this.gameState = new GameState(this.snake, gridSize.cols, gridSize.rows);
 
     window.addEventListener("keyup", this.changeDirection.bind(this));
   }
@@ -94,6 +94,10 @@ export class Game {
   }
 
   private update() {
+    if (!this.gameState.getIsGameStarted()) {
+      return;
+    }
+
     this.snake.move();
 
     if (this.snake.eats(this.food)) {
@@ -105,8 +109,9 @@ export class Game {
       this.startGameLoop();
     }
 
-    if (this.snake.collidesWithSelf()) {
-      console.log("Game Over!");
+    if (this.gameState.checkGameOver()) {
+      this.sound.stopAllSounds();
+      this.sound.playGameOverMusic();
     }
   }
 

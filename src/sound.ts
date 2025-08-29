@@ -5,6 +5,11 @@ export class Sound {
     this.audioContext = new window.AudioContext();
   }
 
+  public stopAllSounds() {
+    this.audioContext.close();
+    this.audioContext = new window.AudioContext();
+  }
+
   public async playRoundStart() {
     const audioBuffer = await this.getSoundFile("/round_start.mp3");
 
@@ -15,6 +20,12 @@ export class Sound {
     const audioBuffer = await this.getSoundFile("/background_music.mp3");
 
     this.playSound(audioBuffer, true);
+  }
+
+  public async playGameOverMusic() {
+    const audioBuffer = await this.getSoundFile("/game_over.mp3");
+
+    this.playSound(audioBuffer, false);
   }
 
   public async bite() {
