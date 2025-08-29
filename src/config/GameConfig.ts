@@ -18,11 +18,38 @@ export class GameConfig {
   public static createSnakeLevel(
     canvasWidth: number,
     canvasHeight: number
-  ): number[][] {
+  ): string[][] {
     const { cols, rows } = GameConfig.getGridSize(canvasWidth, canvasHeight);
-    return Array(rows)
-      .fill(null)
-      .map(() => Array(cols).fill(0));
+    const rowsArr = Array(rows).fill(null);
+
+    return rowsArr.map((_, rowIndex) => {
+      const colsArr = Array(cols).fill("grass");
+
+      if (rowIndex === 0) {
+        colsArr[0] = "cornerTopLeft";
+        colsArr[colsArr.length - 1] = "cornerTopRight";
+
+        for (let i = 1; i < colsArr.length - 1; i++) {
+          colsArr[i] = "wallTop";
+        }
+      }
+
+      if (rowIndex === rowsArr.length - 1) {
+        colsArr[0] = "cornerBottomLeft";
+        colsArr[colsArr.length - 1] = "cornerBottomRight";
+
+        for (let i = 1; i < colsArr.length - 1; i++) {
+          colsArr[i] = "wallBottom";
+        }
+      }
+
+      if (rowIndex > 0 && rowIndex < rowsArr.length - 1) {
+        colsArr[0] = "wallLeft";
+        colsArr[colsArr.length - 1] = "wallRight";
+      }
+
+      return colsArr;
+    });
   }
 
   public static getGameSpeed(): number {

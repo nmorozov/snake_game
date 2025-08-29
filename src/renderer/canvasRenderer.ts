@@ -3,12 +3,13 @@ import type { Snake } from "../snake/snake";
 import type { Renderer } from "./types";
 import { RendererConfig } from "../config/RendererConfig";
 import { GameConfig } from "../config/GameConfig";
+import { grassMap } from "./grassMap";
 
 export class CanvasRenderer implements Renderer {
   private canvasCtx: CanvasRenderingContext2D;
   private foodImage: HTMLImageElement;
   private grassImage: HTMLImageElement;
-  private snakeLevel: number[][];
+  private snakeLevel: string[][];
 
   constructor(canvasCtx: CanvasRenderingContext2D) {
     this.canvasCtx = canvasCtx;
@@ -24,6 +25,8 @@ export class CanvasRenderer implements Renderer {
       canvasCtx.canvas.width,
       canvasCtx.canvas.height
     );
+
+    console.log(this.snakeLevel);
   }
 
   public render(snake: Snake, food: Food, score: number): void {
@@ -36,25 +39,20 @@ export class CanvasRenderer implements Renderer {
 
   private drawUI(score: number) {
     this.canvasCtx.fillStyle = "#000";
-    this.canvasCtx.font = "24px Arial"; // Уменьшим размер шрифта
+    this.canvasCtx.font = "24px Arial";
 
-    // Позиционируем UI в правом верхнем углу canvas
     const canvasWidth = this.canvasCtx.canvas.width;
     const text = `Очки: ${score}`;
 
-    // Измеряем ширину текста
     const textMetrics = this.canvasCtx.measureText(text);
     const textWidth = textMetrics.width;
 
-    // Позиционируем справа с отступом
-    const x = canvasWidth - textWidth - 20; // 20px отступ от правого края
-    const y = 30; // 30px от верхнего края
+    const x = canvasWidth - textWidth - 20;
+    const y = 30;
 
-    // Добавим фон для лучшей читаемости
     this.canvasCtx.fillStyle = "rgba(255, 255, 255, 0.8)";
     this.canvasCtx.fillRect(x - 10, y - 20, textWidth + 20, 30);
 
-    // Рисуем текст
     this.canvasCtx.fillStyle = "#000";
     this.canvasCtx.fillText(text, x, y);
   }
@@ -83,42 +81,7 @@ export class CanvasRenderer implements Renderer {
         colIndex < this.snakeLevel[rowIndex].length;
         colIndex++
       ) {
-        let sourceX = 0;
-        let sourceY = 0;
-
-        // Левый верхний угол
-        if (rowIndex === 0 && colIndex === 0) {
-          sourceX = 32;
-        }
-
-        // Левый нижний угол
-        if (rowIndex === this.snakeLevel.length - 1 && colIndex === 0) {
-          sourceX = 96;
-        }
-
-        // Левая граница
-        if (
-          colIndex === 0 &&
-          rowIndex !== 0 &&
-          rowIndex !== this.snakeLevel.length - 1
-        ) {
-          sourceX = 64;
-        }
-
-        // Правый верхний угол
-        if (rowIndex === 0 && colIndex === this.snakeLevel[0].length - 1) {
-          sourceX = 0;
-          sourceY = 32;
-        }
-
-        // Правый нижний угол
-        if (
-          rowIndex === this.snakeLevel.length - 1 &&
-          colIndex === this.snakeLevel[0].length - 1
-        ) {
-          sourceX = 64;
-          sourceY = 32;
-        }
+        const { x, y } = grassMap[this.snakeLevel[rowIndex][colIndex]];
 
         const sourceWidth = 32;
         const sourceHeight = 32;
@@ -129,8 +92,8 @@ export class CanvasRenderer implements Renderer {
 
         this.canvasCtx.drawImage(
           this.grassImage,
-          sourceX,
-          sourceY,
+          x,
+          y,
           sourceWidth,
           sourceHeight,
           destX,

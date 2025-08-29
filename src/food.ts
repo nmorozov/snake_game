@@ -17,8 +17,9 @@ export class Food extends Position {
     const maxAttempts = 100;
 
     do {
-      this.col = Math.floor(Math.random() * this.gridCols);
-      this.row = Math.floor(Math.random() * this.gridRows);
+      this.col = Math.floor(Math.random() * this.gridCols - 1);
+      this.row = Math.floor(Math.random() * this.gridRows - 1);
+      
       attempts++;
     } while (snake && this.isOnSnake(snake) && attempts < maxAttempts);
   }
