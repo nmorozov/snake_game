@@ -5,6 +5,12 @@ export class Sound {
     this.audioContext = new window.AudioContext();
   }
 
+  public async playRoundStart() {
+    const audioBuffer = await this.getSoundFile("/round_start.mp3");
+
+    this.playSound(audioBuffer, false);
+  }
+
   public async playBackgroundMusic() {
     const audioBuffer = await this.getSoundFile("/background_music.mp3");
 
@@ -31,5 +37,11 @@ export class Sound {
     source.loop = isLoop;
     source.connect(this.audioContext.destination);
     source.start(0);
+
+    if (!isLoop) {
+      source.addEventListener("ended", () => {
+        source.disconnect();
+      });
+    }
   }
 }

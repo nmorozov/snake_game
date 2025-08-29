@@ -43,11 +43,6 @@ export class Game {
   }
 
   private changeDirection(e: KeyboardEvent) {
-    if (!this.gameState.getIsGameStarted()) {
-      this.sound.playBackgroundMusic();
-      this.gameState.startGame();
-    }
-
     const directions = {
       ArrowDown: [0, 1],
       ArrowUp: [0, -1],
@@ -84,6 +79,13 @@ export class Game {
 
       this.snakeVelocityX = direction[0];
       this.snakeVelocityY = direction[1];
+
+      if (!this.gameState.getIsGameStarted()) {
+        this.gameState.startGame();
+        this.sound.playRoundStart();
+
+        setTimeout(() => this.sound.playBackgroundMusic(), 2000);
+      }
     }
   }
 
