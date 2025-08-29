@@ -11,7 +11,7 @@ const RAW_RUNTIME_STATE =
   ],\
   "dependencyTreeRoots": [\
     {\
-      "name": "green-square",\
+      "name": "snake-game",\
       "reference": "workspace:."\
     }\
   ],\
@@ -19,7 +19,7 @@ const RAW_RUNTIME_STATE =
   "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
   "pnpZipBackend": "libzip",\
   "fallbackExclusionList": [\
-    ["green-square", ["workspace:."]]\
+    ["snake-game", ["workspace:."]]\
   ],\
   "fallbackPool": [\
   ],\
@@ -28,9 +28,9 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["green-square", "workspace:."],\
+          ["snake-game", "workspace:."],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:6c12368700b25bf2c0c7a10f43f75b36b2fc1a8f763bd7732f8470faa5160a21e79e2de0c853fb1c993fdae4968636737f2a17f6233e7e2b11af4ae763e5032f#npm:7.1.2"]\
+          ["vite", "virtual:e02ee9af6b0e4a3ace46c6c938ab7fdbf98b97b4fb5076b9c655967f7d3ce65ecd9f45d8a0a17d008f36e65009c051f744c9ee7a88521115ab59af6fe80ce189#npm:7.1.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -853,17 +853,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["green-square", [\
-      ["workspace:.", {\
-        "packageLocation": "./",\
-        "packageDependencies": [\
-          ["green-square", "workspace:."],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:6c12368700b25bf2c0c7a10f43f75b36b2fc1a8f763bd7732f8470faa5160a21e79e2de0c853fb1c993fdae4968636737f2a17f6233e7e2b11af4ae763e5032f#npm:7.1.2"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
     ["http-cache-semantics", [\
       ["npm:4.2.0", {\
         "packageLocation": "../../../../.yarn/berry/cache/http-cache-semantics-npm-4.2.0-fadacfb3ad-10c0.zip/node_modules/http-cache-semantics/",\
@@ -1326,6 +1315,17 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["snake-game", [\
+      ["workspace:.", {\
+        "packageLocation": "./",\
+        "packageDependencies": [\
+          ["snake-game", "workspace:."],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:e02ee9af6b0e4a3ace46c6c938ab7fdbf98b97b4fb5076b9c655967f7d3ce65ecd9f45d8a0a17d008f36e65009c051f744c9ee7a88521115ab59af6fe80ce189#npm:7.1.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["socks", [\
       ["npm:2.8.7", {\
         "packageLocation": "../../../../.yarn/berry/cache/socks-npm-2.8.7-d1d20aae19-10c0.zip/node_modules/socks/",\
@@ -1471,8 +1471,8 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:6c12368700b25bf2c0c7a10f43f75b36b2fc1a8f763bd7732f8470faa5160a21e79e2de0c853fb1c993fdae4968636737f2a17f6233e7e2b11af4ae763e5032f#npm:7.1.2", {\
-        "packageLocation": "./.yarn/__virtual__/vite-virtual-d1d0f39054/5/.yarn/berry/cache/vite-npm-7.1.2-6c08b5f7c7-10c0.zip/node_modules/vite/",\
+      ["virtual:e02ee9af6b0e4a3ace46c6c938ab7fdbf98b97b4fb5076b9c655967f7d3ce65ecd9f45d8a0a17d008f36e65009c051f744c9ee7a88521115ab59af6fe80ce189#npm:7.1.2", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-0a640af1d0/5/.yarn/berry/cache/vite-npm-7.1.2-6c08b5f7c7-10c0.zip/node_modules/vite/",\
         "packageDependencies": [\
           ["@types/jiti", null],\
           ["@types/less", null],\
@@ -1501,7 +1501,7 @@ const RAW_RUNTIME_STATE =
           ["terser", null],\
           ["tinyglobby", "npm:0.2.14"],\
           ["tsx", null],\
-          ["vite", "virtual:6c12368700b25bf2c0c7a10f43f75b36b2fc1a8f763bd7732f8470faa5160a21e79e2de0c853fb1c993fdae4968636737f2a17f6233e7e2b11af4ae763e5032f#npm:7.1.2"],\
+          ["vite", "virtual:e02ee9af6b0e4a3ace46c6c938ab7fdbf98b97b4fb5076b9c655967f7d3ce65ecd9f45d8a0a17d008f36e65009c051f744c9ee7a88521115ab59af6fe80ce189#npm:7.1.2"],\
           ["yaml", null]\
         ],\
         "packagePeers": [\
