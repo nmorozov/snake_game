@@ -3,11 +3,14 @@ import { Snake } from "./snake/snake";
 import { CanvasRenderer } from "./renderer/canvasRenderer";
 import { Food } from "./food";
 import { GameConfig } from "./config/GameConfig";
-import { Audio } from "./audio";
+import { Sound } from "./sound";
+import { GameState } from "./GameState";
 
 export class Game {
   private renderer: CanvasRenderer;
-  private audio: Audio;
+  private sound: Sound;
+
+  private gameState: GameState;
 
   private snake: Snake;
   private snakeVelocityX: number = 0;
@@ -17,12 +20,13 @@ export class Game {
 
   private score: number = 0;
 
-  constructor(canvasCtx: CanvasRenderingContext2D, audio: HTMLAudioElement) {
+  constructor(canvasCtx: CanvasRenderingContext2D, sound: Sound) {
     this.renderer = new CanvasRenderer(canvasCtx);
-    this.audio = new Audio(audio);
+    this.sound = sound;
+
+    this.gameState = new GameState();
 
     const gridSize = this.renderer.getGridSize();
-
     const centerCol = Math.floor(gridSize.cols / 2);
     const centerRow = Math.floor(gridSize.rows / 2);
 
@@ -39,6 +43,11 @@ export class Game {
   }
 
   private changeDirection(e: KeyboardEvent) {
+    if (!this.gameState.getIsGameStarted()) {
+      this.sound.playBackgroundMusic();
+      this.gameState.startGame();
+    }
+
     const directions = {
       ArrowDown: [0, 1],
       ArrowUp: [0, -1],
@@ -93,7 +102,7 @@ export class Game {
 
     if (this.snake.eats(this.food)) {
       this.snake.grow();
-      this.audio.bite();
+      this.sound.bite();
       this.food.generateNewPosition(this.snake); // Передаем змейку
       this.score += 10;
     }

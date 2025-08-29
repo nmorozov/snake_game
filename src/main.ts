@@ -1,4 +1,5 @@
 import { Game } from "./game";
+import { Sound } from "./sound";
 
 const initCanvas = () => {
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -14,14 +15,10 @@ const initCanvas = () => {
   return ctx;
 };
 
-const initAudio = () => {
-  return document.getElementById("audio") as HTMLAudioElement;
-};
-
 const init = () => {
   const canvasCtx = initCanvas();
-  const audio = initAudio();
-  const game = new Game(canvasCtx, audio);
+  const sound = new Sound();
+  const game = new Game(canvasCtx, sound);
 
   game.start();
 };
