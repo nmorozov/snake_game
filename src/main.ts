@@ -22,10 +22,8 @@ const init = async () => {
   const renderer = new CanvasRenderer(canvasCtx);
 
   try {
-    // Ждем загрузки всех ресурсов
     await renderer.waitForAssetsToLoad();
 
-    // Создаем и запускаем игру
     const game = new Game(canvasCtx, sound);
     game.start();
   } catch (error) {

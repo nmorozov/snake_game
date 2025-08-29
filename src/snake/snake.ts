@@ -3,6 +3,8 @@ import { SnakeSegment } from "./snakeSegment";
 
 export class Snake {
   private segments: SnakeSegment[] = [];
+  private velocityX: number = 0;
+  private velocityY: number = 0;
 
   constructor(initialSegments: SnakeSegment[]) {
     this.segments = initialSegments;
@@ -20,8 +22,22 @@ export class Snake {
     return this.segments.length;
   }
 
-  public move(velocityX: number, velocityY: number) {
-    if (velocityX === 0 && velocityY === 0) {
+  public setDirection(velocityX: number, velocityY: number) {
+    if (
+      (this.velocityX === 1 && velocityX === -1) ||
+      (this.velocityX === -1 && velocityX === 1) ||
+      (this.velocityY === 1 && velocityY === -1) ||
+      (this.velocityY === -1 && velocityY === 1)
+    ) {
+      return;
+    }
+
+    this.velocityX = velocityX;
+    this.velocityY = velocityY;
+  }
+
+  public move() {
+    if (this.velocityX === 0 && this.velocityY === 0) {
       return;
     }
 
@@ -29,15 +45,15 @@ export class Snake {
 
     const head = this.getHead();
 
-    if (velocityX > 0) {
+    if (this.velocityX > 0) {
       head.increaseCol();
-    } else if (velocityX < 0) {
+    } else if (this.velocityX < 0) {
       head.decreaseCol();
     }
 
-    if (velocityY > 0) {
+    if (this.velocityY > 0) {
       head.increaseRow();
-    } else if (velocityY < 0) {
+    } else if (this.velocityY < 0) {
       head.decreaseRow();
     }
 
@@ -47,10 +63,26 @@ export class Snake {
     }
   }
 
+  public getVelocity(): { x: number; y: number } {
+    return { x: this.velocityX, y: this.velocityY };
+  }
+
+  public isMoving(): boolean {
+    return this.velocityX !== 0 || this.velocityY !== 0;
+  }
+
   public grow() {
     const tail = this.segments[this.segments.length - 1];
+    const preTail = this.segments[this.segments.length - 2];
 
-    this.segments.push(tail.clone());
+    const deltaX = tail.getCol() - preTail.getCol();
+    const deltaY = tail.getRow() - preTail.getRow();
+
+    const newTail = tail.clone();
+    newTail.setCol(tail.getCol() + deltaX);
+    newTail.setRow(tail.getRow() + deltaY);
+
+    this.segments.push(newTail);
   }
 
   public collidesWithSelf(): boolean {

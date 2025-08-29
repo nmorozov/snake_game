@@ -3,7 +3,6 @@ export class GameConfig {
   public static readonly GAME_SPEED = 1000;
   public static readonly INITIAL_SNAKE_POSITION = { row: 5, col: 5 };
 
-  // Вычисляем размер сетки на основе размера canvas
   public static getGridSize(
     canvasWidth: number,
     canvasHeight: number
@@ -14,7 +13,6 @@ export class GameConfig {
     return { cols, rows };
   }
 
-  // Создаем сетку уровня динамически
   public static createSnakeLevel(
     canvasWidth: number,
     canvasHeight: number

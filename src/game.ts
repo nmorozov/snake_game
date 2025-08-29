@@ -13,9 +13,6 @@ export class Game {
   private gameState: GameState;
 
   private snake: Snake;
-  private snakeVelocityX: number = 0;
-  private snakeVelocityY: number = 0;
-
   private food: Food;
 
   private score: number = 0;
@@ -37,7 +34,6 @@ export class Game {
     ];
     this.snake = new Snake(initialSegments);
     this.food = new Food(gridSize.cols, gridSize.rows);
-    this.food.generateNewPosition(this.snake);
 
     window.addEventListener("keyup", this.changeDirection.bind(this));
   }
@@ -53,39 +49,26 @@ export class Game {
     const direction = directions[e.code as keyof typeof directions];
 
     if (direction) {
-      if (
-        !this.snakeVelocityX &&
-        !this.snakeVelocityY &&
-        e.code === "ArrowLeft"
-      ) {
-        this.snakeVelocityX = 1;
-
+      if (!this.snake.isMoving() && e.code === "ArrowLeft") {
+        this.snake.setDirection(1, 0);
+        this.startGameIfNeeded();
         return;
       }
 
-      if (
-        this.snakeVelocityX &&
-        (e.code === "ArrowLeft" || e.code === "ArrowRight")
-      ) {
-        return;
-      }
+      this.snake.setDirection(direction[0], direction[1]);
+      this.startGameIfNeeded();
+    }
+  }
 
-      if (
-        this.snakeVelocityY &&
-        (e.code === "ArrowDown" || e.code === "ArrowUp")
-      ) {
-        return;
-      }
+  private startGameIfNeeded() {
+    if (!this.gameState.getIsGameStarted()) {
+      this.gameState.startGame();
+      this.sound.playRoundStart();
 
-      this.snakeVelocityX = direction[0];
-      this.snakeVelocityY = direction[1];
-
-      if (!this.gameState.getIsGameStarted()) {
-        this.gameState.startGame();
-        this.sound.playRoundStart();
-
-        setTimeout(() => this.sound.playBackgroundMusic(), 2000);
-      }
+      setTimeout(() => {
+        this.sound.playBackgroundMusic();
+        this.food.generateNewPosition(this.snake);
+      }, 2000);
     }
   }
 
@@ -100,18 +83,17 @@ export class Game {
   }
 
   private update() {
-    this.snake.move(this.snakeVelocityX, this.snakeVelocityY);
+    this.snake.move();
 
     if (this.snake.eats(this.food)) {
       this.snake.grow();
       this.sound.bite();
-      this.food.generateNewPosition(this.snake); // Передаем змейку
+      this.food.generateNewPosition(this.snake);
       this.score += 10;
     }
 
     if (this.snake.collidesWithSelf()) {
       console.log("Game Over!");
-      // Здесь можно добавить логику окончания игры
     }
   }
 

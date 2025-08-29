@@ -7,9 +7,9 @@ export class Food extends Position {
 
   constructor(gridCols: number, gridRows: number) {
     super();
+    
     this.gridCols = gridCols;
     this.gridRows = gridRows;
-    this.generateNewPosition();
   }
 
   public generateNewPosition(snake?: Snake) {

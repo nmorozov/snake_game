@@ -4,11 +4,13 @@ import type { Renderer } from "./types";
 import { RendererConfig } from "../config/RendererConfig";
 import { GameConfig } from "../config/GameConfig";
 import { grassMap } from "./grassMap";
+import { getSegmentType, snakeSprites } from "./snakeSprites";
 
 export class CanvasRenderer implements Renderer {
   private canvasCtx: CanvasRenderingContext2D;
   private foodImage: HTMLImageElement;
   private grassImage: HTMLImageElement;
+  private snakeImage: HTMLImageElement;
   private snakeLevel: string[][];
 
   constructor(canvasCtx: CanvasRenderingContext2D) {
@@ -19,6 +21,9 @@ export class CanvasRenderer implements Renderer {
 
     this.grassImage = new Image(256, 96);
     this.grassImage.src = "/sprite_dirtandgrass.png";
+
+    this.snakeImage = new Image(320, 256);
+    this.snakeImage.src = "/snake.png";
 
     this.snakeLevel = GameConfig.createSnakeLevel(
       canvasCtx.canvas.width,
@@ -55,17 +60,33 @@ export class CanvasRenderer implements Renderer {
   }
 
   private drawSnake(snake: Snake) {
-    this.canvasCtx.fillStyle = RendererConfig.SNAKE_COLOR;
-
     const segments = snake.getSegments();
+    const velocity = snake.getVelocity();
     const cellSize = RendererConfig.getCellSize();
+    const sourceWidth = 64;
+    const sourceHeight = 60;
+    const destWidth = cellSize;
+    const destHeight = cellSize;
 
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i];
-      const x = segment.getCol() * cellSize;
-      const y = segment.getRow() * cellSize;
+      const destX = segment.getCol() * cellSize;
+      const destY = segment.getRow() * cellSize;
 
-      this.canvasCtx.fillRect(x, y, cellSize, cellSize);
+      const segmentType = getSegmentType(i, segments, velocity);
+      const { x, y } = snakeSprites[segmentType];
+
+      this.canvasCtx.drawImage(
+        this.snakeImage,
+        x,
+        y,
+        sourceWidth,
+        sourceHeight,
+        destX,
+        destY,
+        destWidth,
+        destHeight
+      );
     }
   }
 
@@ -105,6 +126,11 @@ export class CanvasRenderer implements Renderer {
   private drawFood(food: Food) {
     const col = food.getCol();
     const row = food.getRow();
+
+    if (!col && !row) {
+      return;
+    }
+
     const cellSize = RendererConfig.getCellSize();
     const x = col * cellSize;
     const y = row * cellSize;
@@ -132,6 +158,7 @@ export class CanvasRenderer implements Renderer {
     const imageLoadPromises = [
       this.waitForImageLoad(this.grassImage),
       this.waitForImageLoad(this.foodImage),
+      this.waitForImageLoad(this.snakeImage),
     ];
 
     await Promise.all(imageLoadPromises);

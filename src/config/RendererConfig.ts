@@ -5,7 +5,6 @@ export class RendererConfig {
   public static readonly SNAKE_COLOR = "red";
   public static readonly FOOD_COLOR = "green";
 
-  // Методы для получения конфигурации
   public static getCellSize(): number {
     return RendererConfig.CELL_SIZE;
   }
