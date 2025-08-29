@@ -20,13 +20,10 @@ export class CanvasRenderer implements Renderer {
     this.grassImage = new Image(256, 96);
     this.grassImage.src = "/sprite_dirtandgrass.png";
 
-    // Создаем сетку уровня на основе размера canvas
     this.snakeLevel = GameConfig.createSnakeLevel(
       canvasCtx.canvas.width,
       canvasCtx.canvas.height
     );
-
-    console.log(this.snakeLevel);
   }
 
   public render(snake: Snake, food: Food, score: number): void {
@@ -124,7 +121,6 @@ export class CanvasRenderer implements Renderer {
     );
   }
 
-  // Метод для получения размеров сетки
   public getGridSize(): { cols: number; rows: number } {
     return {
       cols: this.snakeLevel[0].length,

@@ -49,6 +49,30 @@ export class Game {
     const direction = directions[e.code as keyof typeof directions];
 
     if (direction) {
+      if (
+        !this.snakeVelocityX &&
+        !this.snakeVelocityY &&
+        e.code === "ArrowLeft"
+      ) {
+        this.snakeVelocityX = 1;
+
+        return;
+      }
+
+      if (
+        this.snakeVelocityX &&
+        (e.code === "ArrowLeft" || e.code === "ArrowRight")
+      ) {
+        return;
+      }
+
+      if (
+        this.snakeVelocityY &&
+        (e.code === "ArrowDown" || e.code === "ArrowUp")
+      ) {
+        return;
+      }
+
       this.snakeVelocityX = direction[0];
       this.snakeVelocityY = direction[1];
     }
