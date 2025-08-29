@@ -1,5 +1,6 @@
 import { Game } from "./game";
 import { Sound } from "./sound";
+import { CanvasRenderer } from "./renderer/canvasRenderer";
 
 const initCanvas = () => {
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -15,12 +16,21 @@ const initCanvas = () => {
   return ctx;
 };
 
-const init = () => {
+const init = async () => {
   const canvasCtx = initCanvas();
   const sound = new Sound();
-  const game = new Game(canvasCtx, sound);
+  const renderer = new CanvasRenderer(canvasCtx);
 
-  game.start();
+  try {
+    // Ждем загрузки всех ресурсов
+    await renderer.waitForAssetsToLoad();
+
+    // Создаем и запускаем игру
+    const game = new Game(canvasCtx, sound);
+    game.start();
+  } catch (error) {
+    console.error("Ошибка загрузки ресурсов:", error);
+  }
 };
 
 document.addEventListener("DOMContentLoaded", init);

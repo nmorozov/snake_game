@@ -127,4 +127,25 @@ export class CanvasRenderer implements Renderer {
       rows: this.snakeLevel.length,
     };
   }
+
+  public async waitForAssetsToLoad(): Promise<void> {
+    const imageLoadPromises = [
+      this.waitForImageLoad(this.grassImage),
+      this.waitForImageLoad(this.foodImage),
+    ];
+
+    await Promise.all(imageLoadPromises);
+  }
+
+  private waitForImageLoad(image: HTMLImageElement): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (image.complete && image.naturalWidth > 0) {
+        resolve();
+      } else {
+        image.onload = () => resolve();
+        image.onerror = () =>
+          reject(new Error(`Failed to load image: ${image.src}`));
+      }
+    });
+  }
 }
