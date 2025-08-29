@@ -15,7 +15,7 @@ export class Game {
   private snake: Snake;
   private food: Food;
 
-  private score: number = 0;
+  private gameIntervalId: number | null = null;
 
   constructor(canvasCtx: CanvasRenderingContext2D, sound: Sound) {
     this.renderer = new CanvasRenderer(canvasCtx);
@@ -75,11 +75,22 @@ export class Game {
   public start() {
     this.update();
     this.render();
+    this.startGameLoop();
+  }
 
-    setInterval(() => {
+  private startGameLoop() {
+    if (this.gameIntervalId) {
+      clearInterval(this.gameIntervalId);
+    }
+
+    const currentSpeed = GameConfig.getGameSpeedByScore(
+      this.gameState.getScore()
+    );
+
+    this.gameIntervalId = setInterval(() => {
       this.update();
       this.render();
-    }, GameConfig.getGameSpeed());
+    }, currentSpeed);
   }
 
   private update() {
@@ -89,7 +100,9 @@ export class Game {
       this.snake.grow();
       this.sound.bite();
       this.food.generateNewPosition(this.snake);
-      this.score += 10;
+      this.gameState.addToScore(10);
+
+      this.startGameLoop();
     }
 
     if (this.snake.collidesWithSelf()) {
@@ -98,6 +111,6 @@ export class Game {
   }
 
   private render() {
-    this.renderer.render(this.snake, this.food, this.score);
+    this.renderer.render(this.snake, this.food, this.gameState.getScore());
   }
 }

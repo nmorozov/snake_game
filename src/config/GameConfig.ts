@@ -1,6 +1,6 @@
 export class GameConfig {
   public static readonly CELL_SIZE = 50;
-  public static readonly GAME_SPEED = 1000;
+  public static readonly GAME_SPEED = 800;
   public static readonly INITIAL_SNAKE_POSITION = { row: 5, col: 5 };
 
   public static getGridSize(
@@ -52,6 +52,13 @@ export class GameConfig {
 
   public static getGameSpeed(): number {
     return GameConfig.GAME_SPEED;
+  }
+
+  public static getGameSpeedByScore(score: number): number {
+    const speedIncrease = Math.floor(score / 10) * 20;
+    const currentSpeed = GameConfig.GAME_SPEED - speedIncrease;
+
+    return Math.max(currentSpeed, 50);
   }
 
   public static getCellSize(): number {
